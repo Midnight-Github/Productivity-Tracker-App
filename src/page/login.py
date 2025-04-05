@@ -58,20 +58,20 @@ class Login(ctk.CTkFrame):
         self.password_entry.configure(show="*")
 
     def checkUserExist(self, username):
-        user_data = user_json_handler.load()["accounts"]
+        accounts = user_json_handler.load()["accounts"]
 
-        if not user_data:
+        if not accounts:
             return False
 
-        for user in user_data:
-            if user["username"] == username:
+        for account in accounts:
+            if account["username"] == username:
                 return True
         return False
 
     def checkPassword(self, username, password):
-        user_data = user_json_handler.load()["accounts"]
-        for user in user_data:
-            if user["username"] == username and user["password"] == password:
+        accounts = user_json_handler.load()["accounts"]
+        for account in accounts:
+            if account["username"] == username and account["password"] == password:
                 return True
         return False
 
@@ -96,6 +96,10 @@ class Login(ctk.CTkFrame):
 
         if not self.authenticateUser(username, password):
             return
+
+        data = user_json_handler.load()
+        data["current_user"] = username
+        user_json_handler.dump(data)
 
         self.root.reinitPage("Home")
         self.root.showPage("Home")

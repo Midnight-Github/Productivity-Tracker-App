@@ -64,9 +64,9 @@ class Signup(ctk.CTkFrame):
         self.confirm_password_entry.configure(show="*")
 
     def checkUserExist(self, username):
-        user_data = user_json_handler.load()["accounts"]
-        for user in user_data:
-            if user["username"] == username:
+        accounts = user_json_handler.load()["accounts"]
+        for account in accounts:
+            if username == account["username"]:
                 return True
         return False
 
@@ -103,11 +103,12 @@ class Signup(ctk.CTkFrame):
         if not self.authenticateUser(username, password, confirm_password):
             return
 
-        user_data = user_json_handler.load()
-        user_data["accounts"].append({
+        data = user_json_handler.load()
+        data["accounts"].append({
             "username": username, 
             "password": password
         })
-        user_json_handler.dump(user_data)
+        data["current_user"] = username
+        user_json_handler.dump(data)
 
         self.root.showPage("Home")
