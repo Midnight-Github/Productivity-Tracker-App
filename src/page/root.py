@@ -8,6 +8,7 @@ from page.settings import Settings
 class Root(ctk.CTk):
     def __init__(self):
         super().__init__()
+
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
@@ -24,7 +25,9 @@ class Root(ctk.CTk):
         }
 
         self.page = dict.fromkeys(self.page_class.keys())
-        self.showPage("Login")
+        
+        # self.showPage("Login")
+        self.showPage("Home") # debug
             
     def showPage(self, page_name):
         if self.page[page_name] is None:

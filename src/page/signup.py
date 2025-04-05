@@ -5,6 +5,7 @@ from module.json_handler import user_json_handler
 class Signup(ctk.CTkFrame):
     def __init__(self, root):
         super().__init__(root)
+        
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
@@ -17,7 +18,7 @@ class Signup(ctk.CTkFrame):
         self.heading_label.place(x=50, y=45)
 
         self.error_label = ctk.CTkLabel(self.login_frame, text="", font=('Century Gothic', 12), text_color="red")
-        self.error_label.place(x=25, y=80)
+        self.error_label.place(relx=0.5, y=90, anchor=tk.CENTER)
 
         self.username_entry = ctk.CTkEntry(self.login_frame, width=220, placeholder_text="Username")
         self.username_entry.place(x=50, y=110)
