@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import tkinter as tk
 from module.json_handler import accounts_json_handler, current_user_json_handler
+import bcrypt
 
 class Signup(ctk.CTkFrame):
     def __init__(self, root):
@@ -99,9 +100,12 @@ class Signup(ctk.CTkFrame):
         if not self.authenticateUser(username, password, confirm_password):
             return
 
+        salt = bcrypt.gensalt(rounds=15)
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+
         accounts_json_handler.data.append({
             "username": username, 
-            "password": password
+            "password": hashed_password.decode('utf-8')
         })
         accounts_json_handler.dump()
 

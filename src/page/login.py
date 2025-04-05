@@ -72,7 +72,7 @@ class Login(ctk.CTkFrame):
     def checkPassword(self, username, password):
         accounts = accounts_json_handler.data
         for account in accounts:
-            if account["username"] == username and account["password"] == password:
+            if account["username"] == username and bcrypt.checkpw(password.encode('utf-8'), account["password"].encode('utf-8')):
                 return True
         return False
 
@@ -81,11 +81,7 @@ class Login(ctk.CTkFrame):
             self.error_label.configure(text="Please fill in all fields")
             return False
 
-        if not self.checkUserExist(username):
-            self.error_label.configure(text="User does not exist")
-            return False
-
-        if not self.checkPassword(username, password):
+        if (not self.checkUserExist(username)) or (not self.checkPassword(username, password)):
             self.error_label.configure(text="Incorrect Password")
             return False
 

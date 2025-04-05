@@ -26,8 +26,8 @@ class Root(ctk.CTk):
 
         self.page = dict.fromkeys(self.page_class.keys())
         
-        # self.showPage("Login")
-        self.showPage("Home") # debug
+        self.showPage("Login")
+        # self.showPage("Home") # debug
             
     def showPage(self, page_name):
         if self.page[page_name] is None:
