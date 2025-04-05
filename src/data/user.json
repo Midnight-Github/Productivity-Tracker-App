@@ -1,8 +1,10 @@
 {
-    "users": [
+    "accounts": [
         {
-
+            "username": "Kevin B",
+            "password": "History2030"
         }
     ],
-    "logedin_user": "None"
+    "latest_user": "None",
+    "stays_logged_in": false
 }
