@@ -40,7 +40,7 @@ accounts_json_handler = JsonHandler(
 current_user_json_handler = JsonHandler(
     json_path='src/data/current_user.json',
     default_json={
-        "current_user": None,
+        "username": None,
         "auto_login": False,
     }
 )

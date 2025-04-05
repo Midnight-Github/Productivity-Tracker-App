@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-from module.json_handler import user_json_handler
+from module.json_handler import accounts_json_handler, current_user_json_handler
 
 class Signup(ctk.CTkFrame):
     def __init__(self, root):
@@ -64,7 +64,7 @@ class Signup(ctk.CTkFrame):
         self.confirm_password_entry.configure(show="*")
 
     def checkUserExist(self, username):
-        accounts = user_json_handler.load()["accounts"]
+        accounts = accounts_json_handler.data
         for account in accounts:
             if username == account["username"]:
                 return True
@@ -87,10 +87,6 @@ class Signup(ctk.CTkFrame):
             self.error_label.configure(text="Username already exists")
             return False
 
-        if username == "None":
-            self.error_label.configure(text="Username cannot be 'None'")
-            return False
-
         return True
 
     def createAccount(self):
@@ -103,12 +99,13 @@ class Signup(ctk.CTkFrame):
         if not self.authenticateUser(username, password, confirm_password):
             return
 
-        data = user_json_handler.load()
-        data["accounts"].append({
+        accounts_json_handler.data.append({
             "username": username, 
             "password": password
         })
-        data["current_user"] = username
-        user_json_handler.dump(data)
+        accounts_json_handler.dump()
+
+        current_user_json_handler.data["username"] = username # pyright: ignore
+        current_user_json_handler.dump()
 
         self.root.showPage("Home")

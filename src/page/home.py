@@ -1,31 +1,30 @@
 import customtkinter as ctk
-from module.json_handler import user_json_handler
+from module.json_handler import current_user_json_handler, user_data_json_handler
 import time
 
 class Home(ctk.CTkFrame):
     def __init__(self, root):
         super().__init__(root)
 
-        self.current_user = user_json_handler.load()["current_user"]
+        self.current_username = current_user_json_handler.data["username"]
 
         self.current_user_data = self.getCurrentUserData()
         if self.current_user_data is None:
             self.createDefaultUserData()
             self.current_user_data = self.getCurrentUserData()
-            
+
     def getCurrentUserData(self):
-        user_data = user_json_handler.load()["user_data"]
+        user_data = user_data_json_handler.data
 
         for data in user_data:
-            if self.current_user == data["username"]:
+            if self.current_username == data["username"]:
                 return data
         
         return None
 
     def createDefaultUserData(self):
-        data = user_json_handler.load()
-        data["user_data"].append({
-            "username": data["current_user"],
+        user_data_json_handler.data.append({
+            "username": self.current_username,
             "wakeup_time": 28_800, # 8:00
             "sleep_time": 82_800,  # 23:00
             "total_work_seconds": 25_200, # 7 hours
@@ -33,7 +32,7 @@ class Home(ctk.CTkFrame):
             "break_session_seconds": 300, # 5 minutes
             "break_work_ratio": 0.2, # 20% break
         })
-        user_json_handler.dump(data)
+        user_data_json_handler.dump()
         
 
 
