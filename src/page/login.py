@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-from module.json_handler import accounts_json_handler, current_user_json_handler
+from module.json_handler import accounts_json_handler, current_user_json_handler, user_data_json_handler
 import bcrypt
 
 class Login(ctk.CTkFrame):
@@ -87,6 +87,21 @@ class Login(ctk.CTkFrame):
 
         return True
 
+    def updateCurrentUserJson(self, username):
+        accounts = accounts_json_handler.data
+        for account in accounts:
+            if account["username"] == username:
+                current_user_json_handler.data["account"][0] = account
+                break
+
+        user_data = user_data_json_handler.data
+        for data in user_data:
+            if username == data["username"]:
+                current_user_json_handler.data["user_data"][0] = data
+                break
+            
+        current_user_json_handler.dump()
+
     def loginAccount(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
@@ -94,9 +109,7 @@ class Login(ctk.CTkFrame):
         if not self.authenticateUser(username, password):
             return
 
-        current_user_json_handler.data["username"] = username # pyright: ignore
-        current_user_json_handler.data["auto_login"] = False
-        current_user_json_handler.dump()
+        self.updateCurrentUserJson(username)
 
         self.root.reinitPage("Home")
         self.root.showPage("Home")

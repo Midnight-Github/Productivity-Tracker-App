@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import tkinter as tk
-from module.json_handler import accounts_json_handler, current_user_json_handler
+from module.json_handler import accounts_json_handler, current_user_json_handler, user_data_json_handler
 import bcrypt
 
 class Signup(ctk.CTkFrame):
@@ -90,6 +90,31 @@ class Signup(ctk.CTkFrame):
 
         return True
 
+    def updateJsons(self, username, password):
+        account = {
+            "username": username, 
+            "password": password
+        }
+        accounts_json_handler.data.append(account)
+        accounts_json_handler.dump()
+
+        user_data = {
+            "username": username,
+            "wakeup_time": 28_800, # 8:00
+            "sleep_time": 82_800,  # 23:00
+            "total_work_seconds": 25_200, # 7 hours
+            "work_session_seconds": 1_500, # 25 minutes
+            "break_session_seconds": 300, # 5 minutes
+            "break_work_ratio": 0.2, # 20% break
+        }
+        user_data_json_handler.data.append(user_data)
+        user_data_json_handler.dump()
+
+
+        current_user_json_handler.data["account"][0] = account
+        current_user_json_handler.data["user_data"][0] = user_data
+        current_user_json_handler.dump()
+
     def createAccount(self):
         self.error_label.configure(text="")
 
@@ -103,13 +128,6 @@ class Signup(ctk.CTkFrame):
         salt = bcrypt.gensalt(rounds=15)
         hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
 
-        accounts_json_handler.data.append({
-            "username": username, 
-            "password": hashed_password.decode('utf-8')
-        })
-        accounts_json_handler.dump()
-
-        current_user_json_handler.data["username"] = username # pyright: ignore
-        current_user_json_handler.dump()
+        self.updateJsons(username, hashed_password.decode('utf-8'))
 
         self.root.showPage("Home")

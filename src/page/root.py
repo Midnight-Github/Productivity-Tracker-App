@@ -3,6 +3,9 @@ from page.home import Home
 from page.login import Login
 from page.signup import Signup
 from page.settings import Settings
+from page.daymodoro import Daymodoro
+from page.pomodoro import Pomodoro
+from page.flomodoro import Flomodoro
 
 
 class Root(ctk.CTk):
@@ -21,13 +24,16 @@ class Root(ctk.CTk):
             "Login": Login, 
             "Signup": Signup,
             "Home": Home, 
+            "Daymodoro": Daymodoro,
+            "Pomodoro": Pomodoro,
+            "Flomodoro": Flomodoro,
             "Settings": Settings
         }
 
         self.page = dict.fromkeys(self.page_class.keys())
         
-        self.showPage("Login")
-        # self.showPage("Home") # debug
+        # self.showPage("Login")
+        self.showPage("Home") # debug
             
     def showPage(self, page_name):
         if self.page[page_name] is None:
