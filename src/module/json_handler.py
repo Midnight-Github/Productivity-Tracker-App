@@ -32,24 +32,23 @@ class JsonHandler:
             with open(self.json_path, 'w') as file:
                 json.dump(self.default_json, file, indent=4)
 
+    def reset(self):
+        self.data = self.default_json
+        self.dump()
+
+# should contain username, password and user_data
 accounts_json_handler = JsonHandler(
     json_path='src/data/accounts.json',
     default_json=[]
 )
 
+# should contain only 1 entry of username, password and user_data
 current_user_json_handler = JsonHandler(
     json_path='src/data/current_user.json',
     default_json={
-        "settings": [{
-            "auto_login": False,
-        }],
-        "account": [{}],
-        "user_data": [{}]
+        "username": None, 
+        "password": None, 
+        "user_data": None
     }
-)
-
-user_data_json_handler = JsonHandler(
-    json_path='src/data/user_data.json',
-    default_json=[]
 )
     
