@@ -1,6 +1,4 @@
 import customtkinter as ctk
-from module.json_handler import current_user_json_handler, user_data_json_handler
-import time
 
 class Home(ctk.CTkFrame):
     def __init__(self, root):
