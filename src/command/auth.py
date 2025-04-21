@@ -9,12 +9,25 @@ def login(username, password):
     for account in accounts_json_handler.data:
         if account['username'] == username:
             if bcrypt.checkpw(password.encode('utf-8'), account['password'].encode('utf-8')):
-                current_user_json_handler.data['account'] = account
+                current_user_json_handler.data['username'] = account['username']
+                current_user_json_handler.data['password'] = account['password']
+                current_user_json_handler.data['user_data'] = account['user_data']
                 current_user_json_handler.dump()
                 print(f"Logged in as {username}")
                 return
 
     print("Invalid username or password!")
+
+def authUser(username, password):
+    if not accounts_json_handler.data:
+        return False
+
+    for account in accounts_json_handler.data:
+        if account['username'] == username:
+            if bcrypt.checkpw(password.encode('utf-8'), account['password'].encode('utf-8')):   
+                return True
+                
+    return False
 
 def register(username, password):
     if accounts_json_handler.data:
@@ -24,13 +37,29 @@ def register(username, password):
                 return
 
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-    accounts_json_handler.data.append({'username': username, 'password': hashed_password})
+    accounts_json_handler.data.append({
+        "username": username, 
+        "password": hashed_password,
+        "user_data": { # Insert default user data here
+            "tracker": {}
+        } 
+    })
     accounts_json_handler.dump()
 
     print(f"Registered account '{username}'")
     return
 
 def logout():
+    if current_user_json_handler.data['username'] is None:
+        print("Already logged out!")
+        return
+
+    for account in accounts_json_handler.data:
+        if account['username'] == current_user_json_handler.data['username']:
+            account['user_data'] = current_user_json_handler.data['user_data']
+            accounts_json_handler.dump()
+            break
+    
     current_user_json_handler.reset()
     print("Logged out")
 
