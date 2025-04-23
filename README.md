@@ -1,7 +1,10 @@
 # Productivity Tracker App
 
+## Note
+This project is currently under development.
+
 ## Overview
-The Productivity Tracker App is a command-line tool designed to help users manage their tasks and track time spent on various activities. It provides features for task management, user authentication, and time tracking, all in a simple and intuitive interface.
+The Productivity Tracker App is a GUI-based tool designed to help users track time spent on various activities and generate reports and analyses. It provides features for a multi-user system with simple password authentication, time tracking, and built-in variations of the Pomodoro technique, all in a simple and intuitive interface. A terminal command-based version of the app is also available.
 
 ## Features
 - **User Authentication**:
@@ -10,19 +13,21 @@ The Productivity Tracker App is a command-line tool designed to help users manag
   - Delete an account securely.
 
 - **Task Management**:
-  - Add tasks to specific locations.
-  - Remove tasks from locations.
+  - Add tasks and sub-tasks in a hierarchical order.
+  - Remove tasks.
   - Rename tasks.
   - Reset time spent on tasks.
 
-- **Time Tracking**:
+- **Time Tracking (Planned)**:
   - Track time spent on tasks.
-  - Update the timer for ongoing tasks.
+  - Generate reports and analytics for time spent on each task.
 
-- **Help System**:
-  - Get detailed usage instructions for all commands.
+- **Pomodoro Variants (Planned)**:
+  - **Pomodoro**: Traditional time management technique. Uses a timer to break work into intervals, typically 25 minutes long, followed by short breaks
+  - **Flomodoro**: A flexible version of the Pomodoro technique. Users can work for any duration with the timer, and the break time will be calculated dynamically based on the work period.
+  - **Daymodoro**: A unique Pomodoro variant exclusive to this app. The total work time and break time are fixed, typically in a 5:1 ratio, allowing users to alternate between the two modes.
 
-## Commands
+## Commands (Terminal Version)
 ### Authentication Commands
 - `login <username> <password>`: Login to your account.
 - `register <username> <password>`: Register a new account.
@@ -30,10 +35,10 @@ The Productivity Tracker App is a command-line tool designed to help users manag
 - `delete`: Delete the current account.
 
 ### Task Management Commands
-- `tracker_add_task <location>`: Add a new task to the specified location.
-- `tracker_remove_task <location>`: Remove a task from the specified location.
-- `tracker_reset_time <location>`: Reset the time spent on a task.
-- `tracker_rename_task <initial_location> <new_location>`: Rename a task.
+- `tracker add task <location>`: Add a new task to the specified location.
+- `tracker remove task <location>`: Remove a task from the specified location.
+- `tracker reset time <location>`: Reset the time spent on a task.
+- `tracker rename task <initial_location> <new_location>`: Rename a task.
 
 ### Other Commands
 - `help (<command>)`: Show help for a specific command. If no command is provided, list all available commands.
@@ -41,11 +46,43 @@ The Productivity Tracker App is a command-line tool designed to help users manag
 
 ## How to Run
 1. Clone the repository:
+   ```bash
+   git clone https://github.com/Midnight-Github/Productivity-Tracker-App.git
+   ```
 2. Navigate to the project directory:
+   ```bash
+   cd Productivity-Tracker-App
+   ```
 3. Install dependencies (if any):
+   ```bash
+   pip install -r requirements.txt
+   ```
 4. Run the application:
+   ```bash
+   py src/main.py
+   ```
 
-## File Structure
+## Project Structure
+```
+Productivity-Tracker-App/
+│
+├── src/
+│   ├── main.py                # Entry point of the application
+│   ├── command/
+│   │   ├── auth.py            # Handles user authentication
+│   │   ├── help.py            # Provides help and usage instructions
+│   │   ├── tracker.py         # Manages task-related operations
+│   ├── module/
+│   │   ├── json_handler.py    # Handles JSON file operations
+│   │   ├── state.py           # Reserved for application state management
+│   └── data/
+│       ├── accounts.json      # Stores user account data
+│       ├── current_user.json  # Stores the currently logged-in user data
+│
+├── README.md                  # Documentation for the project
+├── requirements.txt           # Python dependencies
+└── LICENSE                    # License for the project
+```
 
 ## Dependencies
 - Python 3.10 or higher
@@ -54,5 +91,5 @@ The Productivity Tracker App is a command-line tool designed to help users manag
 ## Contributing
 Contributions are welcome! Feel free to submit issues or pull requests to improve the app.
 
-## License
+## License (todo)
 This project is licensed under the MIT License. See the `LICENSE` file for details.
