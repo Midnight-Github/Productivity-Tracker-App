@@ -4,7 +4,7 @@
 This project is currently under development.
 
 ## Overview
-The Productivity Tracker App is a GUI-based tool designed to help users track time spent on various activities and generate reports and analyses. It provides features for a multi-user system with simple password authentication, time tracking, and built-in variations of the Pomodoro technique, all in a simple and intuitive interface. A terminal command-based version of the app is also available.
+The Productivity Tracker App is a command-based tool designed to help users track time spent on various activities and generate reports and analyses. It provides features for a multi-user system with simple password authentication, time tracking, and built-in variations of the Pomodoro technique. A gui-based version of the app is also available.
 
 ## Features
 - **User Authentication**:
@@ -27,7 +27,7 @@ The Productivity Tracker App is a GUI-based tool designed to help users track ti
   - **Flomodoro**: A flexible version of the Pomodoro technique. Users can work for any duration with the timer, and the break time will be calculated dynamically based on the work period.
   - **Daymodoro**: A unique Pomodoro variant exclusive to this app. The total work time and break time are fixed, typically in a 5:1 ratio, allowing users to alternate between the two modes.
 
-## Commands (Terminal Version)
+## Commands
 ### Authentication Commands
 - `login <username> <password>`: Login to your account.
 - `register <username> <password>`: Register a new account.
@@ -47,7 +47,7 @@ The Productivity Tracker App is a GUI-based tool designed to help users track ti
 ## How to Run
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Midnight-Github/Productivity-Tracker-App.git
+   git clone -b no-gui https://github.com/Midnight-Github/Productivity-Tracker-App.git
    ```
 2. Navigate to the project directory:
    ```bash
