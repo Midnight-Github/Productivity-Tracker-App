@@ -1,5 +1,6 @@
 from module.json_handler import current_user_json_handler
 import os
+import time
 
 def addTask(location):
     if current_user_json_handler.data['username'] is None:
@@ -40,7 +41,7 @@ def removeTask(location):
     else:
         print(f"Task '{location}' does not exist.")
 
-def updateTaskTime(location, value): # value: 'HH:MM:SS'
+def updateTaskTime(location, value):  # value: 'HH:MM:SS' # need to test
     if current_user_json_handler.data['username'] is None:
         print("You must be logged in to update task time.")
         return
@@ -54,9 +55,16 @@ def updateTaskTime(location, value): # value: 'HH:MM:SS'
             return
         data = data[component]
 
-    data["time"] = value # todo: use time module to convert time format to seconds
+    try:
+        parsed_time = time.strptime(value, "%H:%M:%S")
+        total_seconds = parsed_time.tm_hour * 3600 + parsed_time.tm_min * 60 + parsed_time.tm_sec
+    except ValueError:
+        print("Invalid time format. Please use 'HH:MM:SS'.")
+        return
+
+    data["time"] = total_seconds
     current_user_json_handler.dump()
-    print(f"Update time for task '{location}' to '{value}'")
+    print(f"Updated time for task '{location}' to {total_seconds} seconds.")
 
 def renameTask(initial_location, new_name):
     if current_user_json_handler.data['username'] is None:
