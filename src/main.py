@@ -11,7 +11,7 @@ COMMAND_CONSTRAINTS = {
     "delete": {"command_len": [1]},
     "tracker add task": {"command_len": [4]},
     "tracker remove task": {"command_len": [4]},
-    "tracker reset task time": {"command_len": [5]},
+    "tracker update task time": {"command_len": [5]},
     "tracker rename task": {"command_len": [5]},
 }
 
@@ -62,8 +62,8 @@ def exeCommand(*args, command_line):
         case "tracker remove task":
             command.tracker.removeTask(args[3])
 
-        case "tracker reset task time":
-            command.tracker.resetTaskTime(args[4])
+        case "tracker update task time":
+            command.tracker.updateTaskTime(*args[4:]) # todo
 
         case "tracker rename task":
             command.tracker.renameTask(*args[3:])

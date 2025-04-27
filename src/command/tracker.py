@@ -40,9 +40,9 @@ def removeTask(location):
     else:
         print(f"Task '{location}' does not exist.")
 
-def resetTaskTime(location):
+def updateTaskTime(location, value): # value: 'HH:MM:SS'
     if current_user_json_handler.data['username'] is None:
-        print("You must be logged in to reset task time.")
+        print("You must be logged in to update task time.")
         return
 
     path_components = os.path.normpath(location).split(os.sep)
@@ -54,9 +54,9 @@ def resetTaskTime(location):
             return
         data = data[component]
 
-    data["time"] = 0
+    data["time"] = value # todo: use time module to convert time format to seconds
     current_user_json_handler.dump()
-    print(f"Reset time for task '{location}'")
+    print(f"Update time for task '{location}' to '{value}'")
 
 def renameTask(initial_location, new_name):
     if current_user_json_handler.data['username'] is None:

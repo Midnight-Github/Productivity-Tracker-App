@@ -16,7 +16,7 @@ The Productivity Tracker App is a command-based tool designed to help users trac
   - Add tasks and sub-tasks in a hierarchical order.
   - Remove tasks.
   - Rename tasks.
-  - Reset time spent on tasks.
+  - Update time spent on tasks.
 
 - **Time Tracking (Planned)**:
   - Track time spent on tasks.
@@ -37,7 +37,7 @@ The Productivity Tracker App is a command-based tool designed to help users trac
 ### Task Management Commands
 - `tracker add task <location>`: Add a new task to the specified location.
 - `tracker remove task <location>`: Remove a task from the specified location.
-- `tracker reset time <location>`: Reset the time spent on a task.
+- `tracker update time <location> <time>`: UPdate the time spent on a task to the give value.
 - `tracker rename task <initial_location> <new_location>`: Rename a task.
 
 ### Other Commands
