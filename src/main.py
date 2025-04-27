@@ -4,30 +4,36 @@ import command.tracker
 from module.json_handler import current_user_json_handler
 
 COMMAND_CONSTRAINTS = {
-    "help": {"arg_count": [0, 1]},
-    "login": {"arg_count": [2]},
-    "register": {"arg_count": [2]},
-    "logout": {"arg_count": [0]},
-    "delete": {"arg_count": [0]},
-    "tracker_add_task": {"arg_count": [1]},
-    "tracker_remove_task": {"arg_count": [1]},
-    "tracker_reset_task_time": {"arg_count": [1]},
-    "tracker_rename_task": {"arg_count": [2]},
+    "help": {"command_len": [1, 2]},
+    "login": {"command_len": [3]},
+    "register": {"command_len": [3]},
+    "logout": {"command_len": [1]},
+    "delete": {"command_len": [1]},
+    "tracker add task": {"command_len": [4]},
+    "tracker remove task": {"command_len": [4]},
+    "tracker reset task time": {"command_len": [5]},
+    "tracker rename task": {"command_len": [5]},
 }
 
-def validateCommand(*args):
-    command = args[0]
-    if command not in COMMAND_CONSTRAINTS:
+def validateCommand(*args, command_line):
+    for command_constraint in COMMAND_CONSTRAINTS:
+        if command_constraint in command_line:
+            command_key = command_constraint
+            break
+    else:
         return False
 
-    return len(args) - 1 in COMMAND_CONSTRAINTS[command]["arg_count"]
+    if len(args) in COMMAND_CONSTRAINTS[command_key]["command_len"]:
+        return command_key
 
-def exeCommand(*args):
-    if not validateCommand(*args):
+def exeCommand(*args, command_line):
+    command_key = validateCommand(*args, command_line=command_line)
+
+    if command_key is False:
         print("Invalid command! Type 'help' to list commands.")
         return
 
-    match args[0]:
+    match command_key:
         case "help":
             command.help.help(*args)
 
@@ -50,17 +56,17 @@ def exeCommand(*args):
             if confirm.lower() == 'y':
                 command.auth.delete()
 
-        case "tracker_add_task":
-            command.tracker.addTask(*args[1:])
+        case "tracker add task":
+            command.tracker.addTask(args[3])
 
-        case "tracker_remove_task":
-            command.tracker.removeTask(*args[1:])
+        case "tracker remove task":
+            command.tracker.removeTask(args[3])
 
-        case "tracker_reset_task_time":
-            command.tracker.resetTaskTime(*args[1:])
+        case "tracker reset task time":
+            command.tracker.resetTaskTime(args[4])
 
-        case "tracker_rename_task":
-            command.tracker.renameTask(*args[1:])
+        case "tracker rename task":
+            command.tracker.renameTask(*args[3:])
 
         case _:
             raise Exception("Unknown Error! command unmatched")
@@ -73,14 +79,14 @@ def main():
         print(f"Logged in as {current_user_json_handler.data['username']}\n")
 
     while True:
-        command = input("command: ")
-        if command.strip() == '':
+        command_line = input("command: ")
+        if command_line.strip() == '':
             continue
-        if command == "quit":
+        if command_line == "quit":
             break
 
         print()
-        exeCommand(*command.split())
+        exeCommand(*command_line.split(), command_line=command_line)
         print()
 
 if __name__ == "__main__":
