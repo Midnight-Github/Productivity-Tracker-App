@@ -47,14 +47,7 @@ def exeCommand(*args, command_line):
             command.auth.logout()
 
         case "delete":
-            password = input("Enter you password to proceed: ")
-            if not command.auth.authUser(current_user_json_handler.data["username"], password):
-                print("Invalid password!")
-                return
-
-            confirm = input("Are you sure you want to delete your account? (y/n): ")
-            if confirm.lower() == 'y':
-                command.auth.delete()
+            command.auth.delete()
 
         case "tracker add task":
             command.tracker.addTask(args[3])

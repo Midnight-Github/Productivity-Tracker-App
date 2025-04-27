@@ -2,6 +2,10 @@ import bcrypt
 from module.json_handler import accounts_json_handler, current_user_json_handler
 
 def login(username, password):
+    if current_user_json_handler.data['username'] is not None:
+        print("You must logout of your current account first!")
+        return
+
     if not accounts_json_handler.data:
         print("No account found!")
         return
@@ -64,11 +68,19 @@ def logout():
     print("Logged out")
 
 def delete():
-    for account in accounts_json_handler.data:
-        if account['username'] == current_user_json_handler.data['username']:
-            accounts_json_handler.data.remove(account)
-            break
+    password = input("Enter you password to proceed: ")
+    if not authUser(current_user_json_handler.data["username"], password):
+        print("Invalid password!")
+        return
 
-    accounts_json_handler.dump()
-    current_user_json_handler.reset()
-    print("Account deleted")
+    confirm = input("Are you sure you want to delete your account? (y/n): ")
+    if confirm.lower() == 'y': 
+        # delete account
+        for account in accounts_json_handler.data:
+            if account['username'] == current_user_json_handler.data['username']:
+                accounts_json_handler.data.remove(account)
+                break
+
+        accounts_json_handler.dump()
+        current_user_json_handler.reset()
+        print("Account deleted")
