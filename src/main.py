@@ -4,7 +4,7 @@ import command.tracker
 from module.json_handler import current_user_json_handler
 
 COMMAND_CONSTRAINTS = {
-    "help": {"command_len": [1, 2]},
+    "help": {"command_len": range(1, 5)},
     "account login": {"command_len": [4]},
     "account register": {"command_len": [4]},
     "account logout": {"command_len": [2]},
@@ -14,6 +14,8 @@ COMMAND_CONSTRAINTS = {
     "tracker update task time": {"command_len": [5]},
     "tracker rename task": {"command_len": [5]},
     "tracker move task": {"command_len": [5]},
+    "tracker start task": {"command_len": [4]},
+    "tracker stop task": {"command_len": [4]},
 }
 
 def validateCommand(*args, command_line):
@@ -38,7 +40,7 @@ def exeCommand(*args, command_line):
 
     match command_key:
         case "help":
-            command.help.help(*args)
+            command.help.help(command_line)
 
         case "account login":
             command.auth.login(*args[2:])
@@ -67,6 +69,12 @@ def exeCommand(*args, command_line):
         case "tracker move task":
             command.tracker.moveTask(*args[3:])
 
+        case "tracker start task":
+            command.tracker.startTask(args[3])
+
+        case "tracker stop task":
+            command.tracker.stopTask(args[3])
+
         case _:
             raise Exception(f"Unknown command: '{command_key}'")
 
@@ -79,7 +87,8 @@ def main():
 
     while True:
         command_line = input("command: ")
-        if command_line.strip() == '':
+        command_line = command_line.strip()
+        if command_line == '':
             continue
         if command_line == "quit":
             break

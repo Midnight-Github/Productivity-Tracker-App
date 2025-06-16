@@ -1,46 +1,46 @@
-def help(*args):
-    if len(args) == 1:
+def help(command_line):
+    if len(command_line.split()) == 1:
         listCommands()
         return
 
-    helpCommand(args[1])
+    helpCommand(command_line)
 
 def listCommands():
-    print("login <username> <password>")
-    print("register <username> <password>")
-    print("logout")
-    print("delete")
+    print("account login <username> <password>")
+    print("account register <username> <password>")
+    print("account logout")
+    print("account delete")
 
     print("tracker add task <location>")
     print("tracker remove task <location>")
     print("tracker update time <location> <value>")
     print("tracker rename task <initial_location> <new_name>")
-    print("tracker move task <initial_location> <new_location>") # broken
+    print("tracker move task <initial_location> <new_location>")
     print("tracker list task (<location>)") # todo
 
-    print("timer start ") # todo
-    print("timer update") # todo
+    print("tracker start task <location>")
+    print("tracker stop task <location>")
 
     print("quit")
 
     print("\nhelp <command> - Show help for a specific command")
 
 def helpCommand(command):
-    match command:
-        case "login":
-            print("Usage: login <username> <password>")
+    match command.split(maxsplit=1)[1]:
+        case "account login":
+            print("Usage: account login <username> <password>")
             print("Login to your account registered in the app.")
 
-        case "register":
-            print("Usage: register <username> <password>")
+        case "account register":
+            print("Usage: account register <username> <password>")
             print("Register a new account in the app.")
 
-        case "logout":
-            print("Usage: logout")
+        case "account logout":
+            print("Usage: account logout")
             print("Logout from your current account.")
 
-        case "delete":
-            print("Usage: delete")
+        case "account delete":
+            print("Usage: account delete")
             print("Delete your current account.")
 
         case "tracker add task":
@@ -69,9 +69,13 @@ def helpCommand(command):
             print("List all tasks in the specified location.")
             print("location is an optional argument.")
 
-        case "timer update":
-            print("Usage: timer update")
-            print("Update the current timer state.")
+        case "tracker start task":
+            print("Usage: tracker start task <location>")
+            print("Start a task at the specified location.")
+
+        case "tracker stop task":
+            print("Usage: tracker stop task <location>")
+            print("Stop a task at the specified location.")
 
         case "quit":
             print("Usage: quit")

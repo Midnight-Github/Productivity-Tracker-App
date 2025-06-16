@@ -11,7 +11,7 @@ def addTask(location):
     data = current_user_json_handler.data["user_data"]["tracker"]  # pyright: ignore
 
     for component in path_components:
-        if component not in data.keys():
+        if component not in data:
             data[component] = {"time": 0}
 
         data = data[component]
@@ -146,3 +146,51 @@ def moveTask(src_location, dest_location):
     del src_parent[src_task]
     current_user_json_handler.dump()
     print(f"Moved task '{src_location}' to '{dest_location}'.")
+
+def startTask(task_location):
+    if current_user_json_handler.data['username'] is None:
+        print("You must be logged in to start a task.")
+        return
+
+    path_components = os.path.normpath(task_location).split(os.sep)
+    data = current_user_json_handler.data["user_data"]["tracker"]  # pyright: ignore
+
+    for component in path_components:
+        if component not in data:
+            print(f"Task '{task_location}' does not exist.")
+            return
+        data = data[component]
+
+    if "start_time" in data:
+        print(f"Task '{task_location}' is already started.")
+        return
+
+    data["start_time"] = time.time()
+    current_user_json_handler.dump()
+
+    print(f"Started task '{task_location}'")
+
+def stopTask(task_location):
+    if current_user_json_handler.data['username'] is None:
+        print("You must be logged in to stop a task.")
+        return
+
+    path_components = os.path.normpath(task_location).split(os.sep)
+    data = current_user_json_handler.data["user_data"]["tracker"]  # pyright: ignore
+
+    for component in path_components:
+        if component not in data:
+            print(f"Task '{task_location}' does not exist.")
+            return
+        data = data[component]
+
+    if "start_time" not in data:
+        print(f"Task '{task_location}' is not started.")
+        return
+
+    elapsed_time = time.time() - data["start_time"]
+    data["time"] += elapsed_time
+    del data["start_time"]
+    current_user_json_handler.dump()
+
+    print(f"Stopped task '{task_location}'. Time spend: {elapsed_time:.2f} seconds. Total time spent: {data['time']:.2f} seconds.")
