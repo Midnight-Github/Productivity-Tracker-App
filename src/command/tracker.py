@@ -170,6 +170,13 @@ def startTask(task_location):
 
     print(f"Started task '{task_location}'")
 
+def formatTime(seconds): # move this to utils.py or something
+    days = int(seconds // 86400)
+    hours = int((seconds % 86400) // 3600)
+    minutes = int((seconds % 3600) // 60)
+    seconds = int(seconds % 60)
+    return f"{days}:{hours}:{minutes}:{seconds}"
+
 def stopTask(task_location):
     if current_user_json_handler.data['username'] is None:
         print("You must be logged in to stop a task.")
@@ -193,4 +200,4 @@ def stopTask(task_location):
     del data["start_time"]
     current_user_json_handler.dump()
 
-    print(f"Stopped task '{task_location}'. Time spend: {elapsed_time:.2f} seconds. Total time spent: {data['time']:.2f} seconds.")
+    print(f"Stopped task '{task_location}'. Time spend: {formatTime(elapsed_time)}. Total time spent: {formatTime(data['time'])}.")
