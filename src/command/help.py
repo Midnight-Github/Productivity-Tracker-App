@@ -16,7 +16,7 @@ def listCommands():
     print("tracker update time <location> <value>")
     print("tracker rename task <initial_location> <new_name>")
     print("tracker move task <initial_location> <new_location>")
-    print("tracker list task (<location>)") # todo
+    print("tracker list task (<location>)")
 
     print("tracker start task <location>")
     print("tracker stop task <location>")

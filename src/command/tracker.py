@@ -147,6 +147,39 @@ def moveTask(src_location, dest_location):
     current_user_json_handler.dump()
     print(f"Moved task '{src_location}' to '{dest_location}'.")
 
+def listTasks(location=""):
+    if current_user_json_handler.data['username'] is None:
+        print("You must be logged in to list tasks.")
+        return
+
+    # Traverse to the specified location
+    path_components = os.path.normpath(location).split(os.sep) if location else []
+    data = current_user_json_handler.data["user_data"]["tracker"] # pyright: ignore
+
+    for component in path_components:
+        if component:
+            if component not in data:
+                print(f"Task '{location}' does not exist.")
+                return
+            data = data[component]
+
+    def print_tree(node, indent=0):
+        for key, value in node.items():
+            if key == "time" or key == "start_time":
+                continue  # Ignore time and start_time keys
+            # Print task name and its time (if present)
+            task_time = ""
+            if isinstance(value, dict) and "time" in value:
+                task_time = f" [{formatTime(value['time'])}]"
+            print("    " * indent + f"- {key}{task_time}")
+            if isinstance(value, dict):
+                # Only recurse if there are sub-tasks (dicts with keys other than 'time'/'start_time')
+                subkeys = [k for k in value if k not in ("time", "start_time")]
+                if subkeys:
+                    print_tree(value, indent + 1)
+
+    print_tree(data)
+
 def startTask(task_location):
     if current_user_json_handler.data['username'] is None:
         print("You must be logged in to start a task.")

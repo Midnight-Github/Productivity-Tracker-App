@@ -14,6 +14,7 @@ COMMAND_CONSTRAINTS = {
     "tracker update task time": {"command_len": [5]},
     "tracker rename task": {"command_len": [5]},
     "tracker move task": {"command_len": [5]},
+    "tracker list task": {"command_len": [3, 4]},
     "tracker start task": {"command_len": [4]},
     "tracker stop task": {"command_len": [4]},
 }
@@ -68,6 +69,14 @@ def exeCommand(*args, command_line):
 
         case "tracker move task":
             command.tracker.moveTask(*args[3:])
+
+        case "tracker list task":
+            if len(args) == 3:
+                command.tracker.listTasks()
+            elif len(args) == 4:
+                command.tracker.listTasks(args[3])
+            else:
+                raise Exception("Invalid number of arguments for 'tracker list task' command.")
 
         case "tracker start task":
             command.tracker.startTask(args[3])
