@@ -68,6 +68,10 @@ def logout():
     print("Logged out")
 
 def delete():
+    if current_user_json_handler.data['username'] is None:
+        print("Login to delete account!")
+        return
+
     password = input("Enter you password to proceed: ")
     if not authUser(current_user_json_handler.data["username"], password):
         print("Invalid password!")
@@ -75,7 +79,6 @@ def delete():
 
     confirm = input("Are you sure you want to delete your account? (y/n): ")
     if confirm.lower() == 'y': 
-        # delete account
         for account in accounts_json_handler.data:
             if account['username'] == current_user_json_handler.data['username']:
                 accounts_json_handler.data.remove(account)

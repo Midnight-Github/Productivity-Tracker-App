@@ -5,14 +5,15 @@ from module.json_handler import current_user_json_handler
 
 COMMAND_CONSTRAINTS = {
     "help": {"command_len": [1, 2]},
-    "login": {"command_len": [3]},
-    "register": {"command_len": [3]},
-    "logout": {"command_len": [1]},
-    "delete": {"command_len": [1]},
+    "account login": {"command_len": [4]},
+    "account register": {"command_len": [4]},
+    "account logout": {"command_len": [2]},
+    "account delete": {"command_len": [2]},
     "tracker add task": {"command_len": [4]},
     "tracker remove task": {"command_len": [4]},
     "tracker update task time": {"command_len": [5]},
     "tracker rename task": {"command_len": [5]},
+    "tracker move task": {"command_len": [5]},
 }
 
 def validateCommand(*args, command_line):
@@ -26,6 +27,8 @@ def validateCommand(*args, command_line):
     if len(args) in COMMAND_CONSTRAINTS[command_key]["command_len"]:
         return command_key
 
+    return False
+
 def exeCommand(*args, command_line):
     command_key = validateCommand(*args, command_line=command_line)
 
@@ -37,16 +40,16 @@ def exeCommand(*args, command_line):
         case "help":
             command.help.help(*args)
 
-        case "login":
-            command.auth.login(*args[1:])
+        case "account login":
+            command.auth.login(*args[2:])
 
-        case "register":
-            command.auth.register(*args[1:])
+        case "account register":
+            command.auth.register(*args[2:])
 
-        case "logout":
+        case "account logout":
             command.auth.logout()
 
-        case "delete":
+        case "account delete":
             command.auth.delete()
 
         case "tracker add task":
@@ -61,8 +64,11 @@ def exeCommand(*args, command_line):
         case "tracker rename task":
             command.tracker.renameTask(*args[3:])
 
+        case "tracker move task":
+            command.tracker.moveTask(*args[3:])
+
         case _:
-            raise Exception("Unknown Error! command unmatched")
+            raise Exception(f"Unknown command: '{command_key}'")
 
 def main():
     print("Productivity Tracker App(no gui)\n")

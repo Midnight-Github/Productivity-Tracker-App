@@ -56,8 +56,8 @@ def helpCommand(command):
             print("Updates the time spent on a task in the specified location to the give value.")
 
         case "tracker rename task":
-            print("Usage: tracker rename task <initial_location> <new_location>")
-            print("Rename a task from the initial location to the new location.")
+            print("Usage: tracker rename task <initial_location> <new_name>")
+            print("Rename a task from the initial location with new name.")
 
         case "tracker list task":
             print("Usage: tracker list task (<location>)")

@@ -97,3 +97,42 @@ def renameTask(initial_location, new_name):
     else:
         print(f"Task '{initial_location}' does not exist.")
 
+def moveTask(initial_location, new_location): # broken
+    if current_user_json_handler.data['username'] is None:
+        print("You must be logged in to move a task.")
+        return
+
+    path_components_initial = os.path.normpath(initial_location).split(os.sep)
+    path_components_new = os.path.normpath(new_location).split(os.sep)
+
+    data = current_user_json_handler.data["user_data"]["tracker"]  # pyright: ignore
+
+    # Traverse to the parent of the initial task
+    for component in path_components_initial[:-1]:
+        if component not in data:
+            print(f"Task '{initial_location}' does not exist.")
+            return
+        data = data[component]
+
+    last_component_initial = path_components_initial[-1]
+    if last_component_initial not in data:
+        print(f"Task '{initial_location}' does not exist.")
+        return
+
+    task_data = data[last_component_initial]
+    del data[last_component_initial]
+
+    # Traverse to the parent of the new location
+    for component in path_components_new[:-1]:
+        if component not in data:
+            data[component] = {"time": 0}
+        data = data[component]
+
+    last_component_new = path_components_new[-1]
+    if last_component_new in data:
+        print(f"A task with the name '{new_location}' already exists.")
+        return
+
+    data[last_component_new] = task_data
+    current_user_json_handler.dump()
+    print(f"Moved task from '{initial_location}' to '{new_location}'")
