@@ -14,7 +14,8 @@ def listCommands():
     print("tracker add task <location>")
     print("tracker remove task <location>")
     print("tracker update time <location> <value>")
-    print("tracker rename task <initial_location> <new_location>")
+    print("tracker rename task <initial_location> <new_name>")
+    print("tracker move task <initial_location> <new_location>") # broken
     print("tracker list task (<location>)") # todo
 
     print("timer start ") # todo
@@ -58,6 +59,10 @@ def helpCommand(command):
         case "tracker rename task":
             print("Usage: tracker rename task <initial_location> <new_name>")
             print("Rename a task from the initial location with new name.")
+
+        case "tracker move task":
+            print("Usage: tracker move task <initial_location> <new_location>")
+            print("Move a task from the initial location to the new location.")
 
         case "tracker list task":
             print("Usage: tracker list task (<location>)")

@@ -97,42 +97,52 @@ def renameTask(initial_location, new_name):
     else:
         print(f"Task '{initial_location}' does not exist.")
 
-def moveTask(initial_location, new_location): # broken
+def moveTask(src_location, dest_location):
     if current_user_json_handler.data['username'] is None:
         print("You must be logged in to move a task.")
         return
 
-    path_components_initial = os.path.normpath(initial_location).split(os.sep)
-    path_components_new = os.path.normpath(new_location).split(os.sep)
+    src_components = os.path.normpath(src_location).split(os.sep)
+    dest_components = os.path.normpath(dest_location).split(os.sep)
 
-    data = current_user_json_handler.data["user_data"]["tracker"]  # pyright: ignore
+    # Circular move protection
+    if src_location == dest_location or dest_components[:len(src_components)] == src_components:
+        print("Cannot move a task into itself or its own subtree.")
+        return
 
-    # Traverse to the parent of the initial task
-    for component in path_components_initial[:-1]:
-        if component not in data:
-            print(f"Task '{initial_location}' does not exist.")
+    data = current_user_json_handler.data["user_data"]["tracker"] # pyright: ignore
+
+    # Traverse to source parent
+    src_parent = data
+    for component in src_components[:-1]:
+        if component not in src_parent:
+            print(f"Source path '{src_location}' does not exist.")
             return
-        data = data[component]
+        src_parent = src_parent[component]
 
-    last_component_initial = path_components_initial[-1]
-    if last_component_initial not in data:
-        print(f"Task '{initial_location}' does not exist.")
+    src_task = src_components[-1]
+    if src_task not in src_parent:
+        print(f"Task '{src_location}' does not exist.")
         return
 
-    task_data = data[last_component_initial]
-    del data[last_component_initial]
+    # Get the task data to move
+    task_data = src_parent[src_task]
 
-    # Traverse to the parent of the new location
-    for component in path_components_new[:-1]:
-        if component not in data:
-            data[component] = {"time": 0}
-        data = data[component]
+    # Traverse to destination parent
+    dest_parent = data
+    for component in dest_components[:-1]:
+        if component not in dest_parent:
+            print(f"Destination path '{dest_location}' does not exist.")
+            return
+        dest_parent = dest_parent[component]
 
-    last_component_new = path_components_new[-1]
-    if last_component_new in data:
-        print(f"A task with the name '{new_location}' already exists.")
+    dest_task = dest_components[-1]
+    if dest_task in dest_parent:
+        print(f"Destination '{dest_location}' already exists.")
         return
 
-    data[last_component_new] = task_data
+    # Move the task
+    dest_parent[dest_task] = task_data
+    del src_parent[src_task]
     current_user_json_handler.dump()
-    print(f"Moved task from '{initial_location}' to '{new_location}'")
+    print(f"Moved task '{src_location}' to '{dest_location}'.")
