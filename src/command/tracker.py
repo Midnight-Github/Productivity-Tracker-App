@@ -203,12 +203,12 @@ def startTask(task_location):
 
     print(f"Started task '{task_location}'")
 
-def formatTime(seconds): # move this to utils.py or something
-    days = int(seconds // 86400)
+def formatTime(seconds):
     hours = int((seconds % 86400) // 3600)
     minutes = int((seconds % 3600) // 60)
-    seconds = int(seconds % 60)
-    return f"{days}:{hours}:{minutes}:{seconds}"
+    secs = int(seconds % 60)
+
+    return f"{hours:02}:{minutes:02}:{secs:02}"  # Format as HH:MM:SS
 
 def stopTask(task_location):
     if current_user_json_handler.data['username'] is None:
