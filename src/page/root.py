@@ -15,7 +15,7 @@ class Root(ctk.CTk):
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
 
-        self.title("Productivity Tracker and Timer")
+        self.title("Productivity Tracker")
         self.geometry("400x600+50+50")
         # self.minsize(800, 600)
         # self.maxsize(800, 600)
